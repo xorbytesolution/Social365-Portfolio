@@ -1,0 +1,150 @@
+/**
+ * Social365 Design Tokens
+ * Harmonized with brand logo (assets/logo.jpeg) & KOTA London editorial aesthetics
+ */
+
+:root {
+  /* ==========================================================================
+     1. Brand & Core Color Palette
+     Derived from Social365 logo: Navy (#14182E) -> Crimson (#D82B48) -> Salmon (#F88379)
+     ========================================================================== */
+  --color-brand-navy: #14182e;
+  --color-brand-navy-light: #1e2444;
+  --color-brand-crimson: #d82b48;
+  --color-brand-crimson-vibrant: #e03a52;
+  --color-brand-salmon: #f88379;
+  --color-brand-peach: #ffa07a;
+
+  /* Signature 365 Brand Gradients */
+  --gradient-brand-365: linear-gradient(
+    135deg,
+    var(--color-brand-navy) 0%,
+    var(--color-brand-crimson) 52%,
+    var(--color-brand-salmon) 100%
+  );
+  --gradient-brand-warm: linear-gradient(
+    135deg,
+    var(--color-brand-crimson-vibrant) 0%,
+    var(--color-brand-salmon) 60%,
+    var(--color-brand-peach) 100%
+  );
+  --gradient-brand-text: linear-gradient(
+    95deg,
+    #0c0d12 0%,
+    var(--color-brand-navy) 35%,
+    var(--color-brand-crimson) 70%,
+    var(--color-brand-salmon) 100%
+  );
+
+  /* Surface & Canvas Environments */
+  --color-bg-light: #f7f8fa;
+  --color-bg-light-surface: #ffffff;
+  --color-bg-dark: #090a0f;
+  --color-bg-dark-surface: #10121a;
+  --color-bg-dark-card: rgba(16, 18, 26, 0.85);
+
+  /* High-Contrast Editorial Typography */
+  --color-text-dark: #0a0b10;
+  --color-text-dark-muted: #5e6375;
+  --color-text-light: #f8f9fc;
+  --color-text-light-muted: #8e95aa;
+
+  /* Borders & Glassmorphism */
+  --border-light-subtle: rgba(10, 11, 16, 0.08);
+  --border-light-medium: rgba(10, 11, 16, 0.16);
+  --border-dark-subtle: rgba(255, 255, 255, 0.08);
+  --border-dark-glow: rgba(224, 58, 82, 0.25);
+  --glass-dark-blur: blur(24px);
+  --glass-light-blur: blur(20px);
+
+  /* ==========================================================================
+     2. Fluid Typography Scale (Powered by clamp)
+     KOTA-inspired bold grotesque scale
+     ========================================================================== */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Syne', 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --text-hero: clamp(3rem, 6.8vw, 7.6rem);
+  --text-display: clamp(2.8rem, 5.8vw, 6.2rem);
+  --text-h1: clamp(2.2rem, 4.2vw, 4.2rem);
+  --text-h2: clamp(1.75rem, 2.9vw, 2.85rem);
+  --text-h3: clamp(1.3rem, 1.9vw, 1.95rem);
+  --text-body-lg: clamp(1.1rem, 1.35vw, 1.45rem);
+  --text-body: clamp(0.95rem, 1.05vw, 1.15rem);
+  --text-small: clamp(0.8rem, 0.9vw, 0.95rem);
+  --text-micro: clamp(0.68rem, 0.78vw, 0.82rem);
+
+  /* Headline Tracking */
+  --tracking-tighter: -0.045em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.06em;
+  --tracking-wider: 0.12em;
+
+  /* Line Heights */
+  --leading-tightest: 0.88;
+  --leading-tight: 0.96;
+  --leading-snug: 1.15;
+  --leading-normal: 1.5;
+  --leading-loose: 1.7;
+
+  /* ==========================================================================
+     3. KOTA Signature Curved Geometry & Borders
+     Asymmetrical organic leaf radius: top-right curved corner
+     ========================================================================== */
+  --radius-leaf-card: 36px 120px 36px 36px;
+  --radius-leaf-pill: 24px 80px 24px 24px;
+  --radius-card-sm: 20px;
+  --radius-card-md: 32px;
+  --radius-card-lg: 44px;
+  --radius-full: 9999px;
+
+  /* Elevation & Shadows */
+  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --shadow-medium: 0 12px 40px rgba(0, 0, 0, 0.08);
+  --shadow-elevated: 0 24px 70px rgba(0, 0, 0, 0.12);
+  --shadow-brand-glow: 0 16px 50px rgba(216, 43, 72, 0.22);
+  --shadow-dark-card: 0 20px 50px rgba(0, 0, 0, 0.45);
+
+  /* ==========================================================================
+     4. 3D, WebGL & Layer Depth Stacking (z-index)
+     ========================================================================== */
+  --z-aurora-bg: 0;
+  --z-canvas-3d: 5;
+  --z-content-base: 10;
+  --z-content-elevated: 20;
+  --z-floating-dock: 50;
+  --z-header: 100;
+  --z-overlay: 500;
+  --z-cursor: 9999;
+
+  /* Spacing Scale */
+  --space-unit: 8px;
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-xl: 64px;
+  --space-2xl: 96px;
+  --space-3xl: 140px;
+
+  /* Transitions & Curves */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 0.2s;
+  --duration-medium: 0.45s;
+  --duration-slow: 0.85s;
+}
+
+/* Dark mode section wrapper helper */
+.theme-dark {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-light);
+}
+
+.theme-light {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+}
+

@@ -1,0 +1,41 @@
+
+/* Native page transition */
+::view-transition-group(root) {
+  animation-duration: 800ms;
+}
+
+::view-transition-old(root) {
+  animation: none;
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: page-expand-from-button 800ms
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-expand-from-button {
+  from {
+    clip-path: circle(
+      0px at var(--reveal-x, 50%) var(--reveal-y, 50%)
+    );
+  }
+
+  to {
+    clip-path: circle(
+      var(--reveal-radius, 150vmax)
+      at var(--reveal-x, 50%) var(--reveal-y, 50%)
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root) {
+    animation-duration: 0.01ms;
+  }
+
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

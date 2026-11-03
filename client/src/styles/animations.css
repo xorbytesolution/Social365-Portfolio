@@ -1,0 +1,161 @@
+/**
+ * Fluid Animations & Micro-Interactions
+ */
+
+/* Aurora Background Canvas container */
+.aurora-canvas-wrap {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--z-aurora-bg);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* 3D Hero Lens / Viewport */
+.hero-lens-container {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  width: clamp(65px, 8.5vw, 115px);
+  height: clamp(65px, 8.5vw, 115px);
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(216, 43, 72, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  transform-origin: center center;
+  transition: transform var(--duration-medium) var(--ease-spring);
+}
+
+.hero-lens-container:hover {
+  transform: scale(1.08);
+}
+
+/* Custom Interactive Cursor */
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-brand-crimson);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid rgba(216, 43, 72, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease-out, width 0.25s, height 0.25s, border-color 0.25s, background-color 0.25s;
+}
+
+/* Cursor Hover states */
+body.cursor-hover .custom-cursor-ring {
+  width: 65px;
+  height: 65px;
+  background-color: rgba(224, 58, 82, 0.12);
+  border-color: var(--color-brand-crimson);
+}
+
+body.cursor-view .custom-cursor-ring {
+  width: 80px;
+  height: 80px;
+  background-color: var(--color-brand-navy);
+  border-color: var(--color-brand-salmon);
+}
+
+/* KOTA Stacked Card Base */
+.kota-service-card {
+  border-radius: var(--radius-leaf-card);
+  background-color: var(--color-bg-light-surface);
+  box-shadow: var(--shadow-elevated);
+  border: 1px solid var(--border-light-subtle);
+  overflow: hidden;
+  transition: transform var(--duration-medium) var(--ease-expo), box-shadow var(--duration-medium) var(--ease-expo);
+}
+
+.kota-service-card:hover {
+  box-shadow: var(--shadow-brand-glow);
+}
+
+/* Multiplier Formula Card (Extrapage reference) */
+.multiplier-pillar-card {
+  border-radius: var(--radius-leaf-card);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: var(--glass-light-blur);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  padding: clamp(24px, 4vw, 48px);
+  box-shadow: var(--shadow-medium);
+  transition: transform var(--duration-fast) var(--ease-expo), box-shadow var(--duration-fast) var(--ease-expo);
+}
+
+.multiplier-pillar-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-elevated);
+}
+
+/* Button Base (Stable / Anchored) */
+.magnetic-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 30px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-body);
+  font-weight: 600;
+  letter-spacing: var(--tracking-normal);
+  background-color: var(--color-text-dark);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s ease,
+              border-color 0.25s ease,
+              color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.magnetic-btn:hover {
+  transform: translateY(-2px);
+  background-color: var(--color-brand-crimson);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(224, 58, 82, 0.25);
+}
+
+.magnetic-btn:active {
+  transform: translateY(0);
+}
+
+.magnetic-btn.outline {
+  background: transparent;
+  color: var(--color-text-dark);
+  border: 1.5px solid var(--color-text-dark);
+}
+
+.magnetic-btn.outline:hover {
+  transform: translateY(-2px);
+  background-color: var(--color-text-dark);
+  color: #ffffff;
+  border-color: var(--color-text-dark);
+  box-shadow: 0 8px 24px rgba(12, 13, 18, 0.15);
+}
+
+.magnetic-btn.outline:active {
+  transform: translateY(0);
+}
+

@@ -1,0 +1,500 @@
+/* App-specific custom layout overrides */
+.app-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Hero Section 100vh Viewport Layout */
+.hero-section {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: clamp(18px, 2.5vw, 28px);
+  padding-bottom: clamp(20px, 3.2vh, 36px);
+  box-sizing: border-box;
+  z-index: var(--z-content-base);
+}
+
+@media (min-width: 900px) and (min-height: 600px) {
+  .hero-section {
+    height: 100vh;
+    height: 100dvh;
+  }
+}
+
+.hero-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* Top status row placed in hero page flow (scrolls away naturally) */
+.hero-top-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.5vw, 24px);
+  min-height: clamp(28px, 3.2vw, 38px);
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .hero-top-eyebrow {
+    padding-left: clamp(140px, 14vw, 190px);
+    padding-right: clamp(180px, 18vw, 240px);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-top-eyebrow {
+    margin-top: 60px;
+    padding-left: 0;
+  }
+}
+
+.hero-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--color-text-dark-muted);
+}
+
+.hero-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-brand-crimson);
+  display: inline-block;
+  box-shadow: 0 0 10px var(--color-brand-crimson);
+}
+
+/* ==========================================================================
+   Services Deck Pinned Stacking Layout (KOTA London Benchmark)
+   ========================================================================== */
+.services-deck-section {
+  position: relative;
+  z-index: var(--z-content-base);
+  width: 100%;
+}
+
+/* 1. Header Section (scrolls naturally out of view) */
+.services-header-container {
+  padding-top: clamp(90px, 13vh, 150px);
+  padding-bottom: clamp(32px, 5vh, 56px);
+}
+
+.services-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.services-title {
+  font-family: var(--font-sans);
+  font-size: clamp(3.8rem, 8.5vw, 7.8rem);
+  font-weight: 600;
+  color: var(--color-text-dark);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  line-height: 0.92;
+  margin: 0;
+}
+
+.services-arrow-wrap {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: clamp(8px, 1.2vw, 18px);
+  user-select: none;
+}
+
+.services-arrow-svg {
+  color: var(--color-text-dark);
+  width: clamp(48px, 6vw, 72px);
+  height: clamp(48px, 6vw, 72px);
+}
+
+/* 2. Pinned Cards Stage Wrapper (Pins directly in viewport center) */
+.services-pin-wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+  .services-pin-wrapper {
+    min-height: calc(100vh - 85px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.services-stage-container {
+  width: 100%;
+}
+
+.services-cards-stage {
+  position: relative;
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .services-cards-stage {
+    height: clamp(580px, 80vh, 740px);
+  }
+
+  .stack-card {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: center top;
+    will-change: transform, opacity, filter;
+  }
+}
+
+@media (max-width: 899px) {
+  .services-cards-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-bottom: 40px;
+  }
+
+  .stack-card {
+    position: relative;
+    width: 100%;
+  }
+}
+
+/* Individual Large Stack Card Frame */
+.stack-card-inner {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(32px, 4.5vw, 64px);
+  align-items: center;
+  padding: clamp(32px, 4.5vw, 64px);
+  background-color: #ffffff;
+  border-radius: var(--radius-leaf-card);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-light-subtle);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+  .stack-card-inner {
+    grid-template-columns: 1.15fr 1fr;
+  }
+}
+
+.service-card-title {
+  font-family: var(--font-sans);
+  font-size: clamp(2.4rem, 4.4vw, 4.6rem);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.035em;
+  color: var(--color-text-dark);
+  margin: 0;
+}
+
+/* ==========================================================================
+   About Us Section (More Than a Social Agency — Image 1 & 2 Benchmark)
+   ========================================================================== */
+.about-section {
+  position: relative;
+  z-index: var(--z-content-base);
+  width: 100%;
+  padding-block: clamp(80px, 12vh, 160px);
+  overflow: hidden;
+}
+
+.about-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(48px, 6vw, 96px);
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .about-container {
+    grid-template-columns: 0.95fr 1.22fr; /* Optimized balance: text on Left, expanded visual canvas on Right */
+    gap: clamp(36px, 4.5vw, 72px);
+    align-items: center;
+  }
+}
+
+.about-visual-column {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.about-headline {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 5.8vw, 5.8rem);
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  color: var(--color-text-dark);
+  margin-bottom: clamp(20px, 3vh, 32px);
+  position: relative;
+}
+
+.about-decorative-ring {
+  display: inline-block;
+  width: clamp(20px, 2.5vw, 30px);
+  height: clamp(20px, 2.5vw, 30px);
+  border-radius: 50%;
+  border: 1.5px solid rgba(224, 58, 82, 0.45);
+  margin-left: 14px;
+  vertical-align: middle;
+}
+
+.about-description {
+  font-size: clamp(1.05rem, 1.25vw, 1.35rem);
+  line-height: 1.6;
+  color: var(--color-text-dark-muted);
+  max-width: 520px;
+  margin-bottom: clamp(28px, 4vh, 40px);
+}
+
+.about-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2.5vw, 32px);
+  margin-top: clamp(40px, 6vh, 64px);
+  padding-top: clamp(24px, 3.5vh, 36px);
+  border-top: 1px solid var(--border-light-subtle);
+}
+
+.about-stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.about-stat-item:not(:last-child) {
+  border-right: 1px solid var(--border-light-subtle);
+  padding-right: clamp(12px, 2vw, 24px);
+}
+
+.about-stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-text-dark);
+}
+
+.about-stat-label {
+  font-size: var(--text-small);
+  color: var(--color-text-dark-muted);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* 3D Visual Sculpture Container (Image 2 Match) */
+.about-visual-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.about-sculpture-card {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  border-radius: var(--radius-card-lg);
+  transform-style: preserve-3d;
+}
+
+.about-sculpture-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 30px 60px rgba(224, 58, 82, 0.16));
+  user-select: none;
+  pointer-events: none;
+}
+
+
+/* ==========================================================================
+   About Us — GSAP Cinematic Reveal Animations
+   ========================================================================== */
+
+/* Left Editorial Content */
+.about-content-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.about-eyebrow {
+  margin-bottom: clamp(16px, 2.5vh, 24px);
+}
+
+/* Headline Line Masking */
+.about-headline-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+
+.about-headline-line-inner {
+  display: block;
+  will-change: transform, opacity;
+}
+
+/* Red Headline Dot */
+.about-headline-dot {
+  color: var(--color-brand-crimson);
+}
+
+/* Decorative Ring */
+.about-decorative-ring {
+  display: inline-block;
+  width: clamp(20px, 2.5vw, 30px);
+  height: clamp(20px, 2.5vw, 30px);
+  border-radius: 50%;
+  border: 1.5px solid rgba(224, 58, 82, 0.45);
+  margin-left: 14px;
+  vertical-align: middle;
+  will-change: transform, opacity;
+}
+
+/* Supporting Description */
+.about-description {
+  will-change: transform, opacity;
+}
+
+/* CTA */
+.about-cta-wrapper {
+  width: fit-content;
+  will-change: transform, opacity;
+}
+
+/* Statistics */
+.about-stat-item {
+  will-change: transform, opacity;
+}
+
+.about-stat-value {
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 3D Sculpture Entrance */
+.about-visual-column {
+  will-change: transform, opacity;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .about-stats-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .about-stat-item:not(:last-child) {
+    padding-right: 8px;
+  }
+
+  .about-stat-value {
+    font-size: clamp(1.7rem, 6vw, 2.4rem);
+  }
+
+  .about-stat-label {
+    font-size: 0.75rem;
+  }
+
+  .about-decorative-ring {
+    width: 17px;
+    height: 17px;
+    margin-left: 6px;
+  }
+}
+
+/* ==========================================================================
+   Hero Section — Cinematic Entrance Animations
+   ========================================================================== */
+
+/* Headline line masking */
+.hero-headline-line {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  padding-bottom: 0.04em;
+  margin-bottom: -0.04em;
+}
+
+.hero-headline-inner {
+  display: block;
+  will-change: transform, opacity;
+}
+
+/* Third headline line contains the sphere */
+.hero-headline-inner:has(.hero-sphere-reveal) {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 3D Sphere entrance wrapper */
+.hero-sphere-reveal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+/* Bottom section */
+.hero-bottom-wrapper {
+  width: 100%;
+}
+
+.hero-bottom-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-light-subtle);
+  transform-origin: left center;
+  margin-bottom: clamp(16px, 2vh, 26px);
+  will-change: transform;
+}
+
+.hero-bottom-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(20px, 4vw, 48px);
+  align-items: flex-end;
+}
+
+/* Animated content targets */
+.hero-animate-eyebrow,
+.hero-description,
+.hero-cta-group,
+.hero-proof-label,
+.hero-proof-item {
+  will-change: transform, opacity;
+}

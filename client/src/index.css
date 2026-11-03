@@ -1,0 +1,44 @@
+/* ==========================================================================
+   Social365 — Master Design System Stylesheet
+   Harmonized with brand logo (assets/logo.jpeg) & KOTA London aesthetics
+   ========================================================================== */
+
+@import './styles/tokens.css';
+@import './styles/reset.css';
+@import './styles/typography.css';
+@import './styles/animations.css';
+
+/* Root Application Layout */
+#root {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+}
+
+.site-main {
+  flex: 1;
+  position: relative;
+  z-index: var(--z-content-base);
+  width: 100%;
+}
+
+/* Fluid Editorial Container */
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4.5vw, 4.5rem);
+}
+
+/* Section Spacing Utilities */
+.section-padding {
+  padding-block: clamp(4rem, 9vw, 9.5rem);
+}
+
+.section-padding-sm {
+  padding-block: clamp(2.5rem, 5vw, 5rem);
+}
+
