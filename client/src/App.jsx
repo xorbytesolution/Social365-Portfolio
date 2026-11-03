@@ -4,6 +4,7 @@ import { useLenis } from "./hooks/useLenis";
 import AuroraBackground from "./components/3d/AuroraBackground";
 import CustomCursor from "./components/common/CustomCursor";
 import Navbar from "./components/common/Navbar";
+import Footer from "./components/common/Footer";
 import ScrollToTop from "./components/common/ScrollToTop";
 import HomePage from "./pages/HomePage";
 import ServicesOverviewPage from "./pages/ServicesOverviewPage";
@@ -50,6 +51,9 @@ function App() {
             <Route path="*" element={<HomePage />} />
           </Routes>
         </main>
+
+        {/* 5. Persistent Footer (shared across all routes) */}
+        <Footer />
       </PageTransition>
     </div>
   );

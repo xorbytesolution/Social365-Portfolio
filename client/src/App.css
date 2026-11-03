@@ -498,3 +498,393 @@
 .hero-proof-item {
   will-change: transform, opacity;
 }
+
+
+
+/* ==========================================================================
+   Social Media + Influencer — Light Interactive Visuals
+   ========================================================================== */
+
+.dot-field-visual,
+.influencer-network-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: clamp(360px, 46vh, 520px);
+  overflow: hidden;
+  box-sizing: border-box;
+  isolation: isolate;
+
+  background:
+    radial-gradient(
+      circle at 55% 50%,
+      rgba(255, 180, 200, 0.18),
+      transparent 48%
+    ),
+    linear-gradient(
+      135deg,
+      #fffafa 0%,
+      #fff1f5 48%,
+      #f4edff 100%
+    );
+}
+
+.dot-field-canvas,
+.influencer-network-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: pan-y;
+}
+
+/* Top and bottom labels */
+
+.dot-field-top,
+.dot-field-bottom {
+  position: absolute;
+  left: clamp(20px, 2.5vw, 36px);
+  right: clamp(20px, 2.5vw, 36px);
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dot-field-top {
+  top: clamp(24px, 3vw, 42px);
+}
+
+.dot-field-bottom {
+  bottom: clamp(24px, 3vw, 42px);
+}
+
+/* Light status pill */
+
+.dot-field-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 14px;
+  border: 1px solid rgba(20, 20, 30, 0.08);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.65);
+  color: #24232b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  backdrop-filter: blur(12px);
+}
+
+.dot-field-status span {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: #ed2445;
+  box-shadow: 0 0 10px rgba(237, 36, 69, 0.5);
+}
+
+/* System labels */
+
+.dot-field-system,
+.dot-field-bottom {
+  color: #777486;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+/* Center typography */
+
+.dot-field-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 85%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.dot-field-center-label {
+  color: #777486;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.dot-field-center h4 {
+  margin: 14px 0 0;
+  color: #101014;
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 2.4vw, 2.45rem);
+  font-weight: 750;
+  line-height: 1.1;
+  letter-spacing: -0.055em;
+}
+
+.dot-field-center h4 span {
+  color: #ed2445;
+}
+
+.dot-field-live {
+  color: #ed2445;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .dot-field-status {
+    font-size: 8px;
+    padding: 7px 10px;
+  }
+
+  .dot-field-system,
+  .dot-field-bottom {
+    font-size: 7px;
+  }
+
+  .dot-field-center h4 {
+    font-size: 1.7rem;
+  }
+}
+
+/* ==========================================================================
+   Social Media + Influencer — Full-Bleed Interactive Visuals
+   ========================================================================== */
+
+.stack-card-inner--interactive {
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 0;
+}
+
+/* Keep the left content properly spaced */
+.stack-card-inner--interactive .service-card-copy {
+  position: relative;
+  z-index: 2;
+  padding: clamp(32px, 4.5vw, 64px);
+  gap: 22px;
+}
+
+/* Remove the inner frame from both animations */
+.stack-card-inner--interactive .dot-field-visual,
+.stack-card-inner--interactive .influencer-network-visual {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Responsive layout */
+@media (max-width: 899px) {
+  .stack-card-inner--interactive {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 0;
+  }
+
+  .stack-card-inner--interactive .service-card-copy {
+    padding: clamp(28px, 5vw, 48px);
+  }
+
+  .stack-card-inner--interactive .dot-field-visual,
+  .stack-card-inner--interactive .influencer-network-visual {
+    min-height: 360px;
+  }
+}
+
+/* ==========================================================================
+   Digital Marketing & Paid Ads — Full-Bleed Performance Waves
+   ========================================================================== */
+
+.stack-card-inner--performance {
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 0;
+}
+
+/* Keep the text column comfortably spaced */
+.stack-card-inner--performance .service-card-copy {
+  position: relative;
+  z-index: 2;
+  padding: clamp(32px, 4.5vw, 64px);
+  gap: 22px;
+}
+
+/* Full-bleed right-side visual */
+.performance-waves-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: clamp(360px, 46vh, 520px);
+  overflow: hidden;
+  box-sizing: border-box;
+  isolation: isolate;
+
+  background:
+    radial-gradient(
+      circle at 55% 50%,
+      rgba(255, 180, 200, 0.18),
+      transparent 48%
+    ),
+    linear-gradient(
+      135deg,
+      #fffafa 0%,
+      #fff1f5 48%,
+      #f4edff 100%
+    );
+}
+
+.performance-waves-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: pan-y;
+}
+
+/* Top and bottom labels */
+.performance-waves-top,
+.performance-waves-bottom {
+  position: absolute;
+  left: clamp(20px, 2.5vw, 36px);
+  right: clamp(20px, 2.5vw, 36px);
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.performance-waves-top {
+  top: clamp(24px, 3vw, 42px);
+}
+
+.performance-waves-bottom {
+  bottom: clamp(24px, 3vw, 42px);
+}
+
+.performance-waves-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 14px;
+  border: 1px solid rgba(20, 20, 30, 0.08);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.65);
+  color: #24232b;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  backdrop-filter: blur(12px);
+}
+
+.performance-waves-status span {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: #ed2445;
+  box-shadow: 0 0 10px rgba(237, 36, 69, 0.5);
+}
+
+.performance-waves-system,
+.performance-waves-bottom {
+  color: #777486;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+/* Central headline */
+.performance-waves-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 90%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.performance-waves-center > span {
+  color: #777486;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.performance-waves-center h4 {
+  margin: 16px 0 0;
+  color: #101014;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.2vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.06em;
+}
+
+.performance-waves-center h4 span {
+  color: #ed2445;
+}
+
+.performance-waves-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #ed2445;
+}
+
+.performance-waves-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ed2445;
+}
+
+/* Tablet and mobile */
+@media (max-width: 899px) {
+  .stack-card-inner--performance {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 0;
+  }
+
+  .stack-card-inner--performance .service-card-copy {
+    padding: clamp(28px, 5vw, 48px);
+  }
+
+  .performance-waves-visual {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 600px) {
+  .performance-waves-visual {
+    min-height: 320px;
+  }
+
+  .performance-waves-status {
+    font-size: 8px;
+    padding: 7px 10px;
+  }
+
+  .performance-waves-system,
+  .performance-waves-bottom {
+    font-size: 7px;
+  }
+
+  .performance-waves-center h4 {
+    font-size: 2rem;
+  }
+}

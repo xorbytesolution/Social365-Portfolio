@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticButton from "../common/MagneticButton";
@@ -11,6 +11,640 @@ gsap.registerPlugin(ScrollTrigger);
  * ServiceMockupCanvas
  * Right-hand 3D dark arched container with interactive mouse perspective tilt
  */
+
+function InfluencerNetworkVisual() {
+  const canvasRef = useRef(null);
+  const pointerRef = useRef({ x: null, y: null });
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    let width = 0;
+    let height = 0;
+    let nodes = [];
+    let animationFrame;
+    let visible = true;
+
+    const mouse = pointerRef.current;
+    const connectionDistance = 125;
+    const nodeCount = 65;
+
+    const createNodes = () => {
+      nodes = Array.from({ length: nodeCount }, (_, i) => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        radius: Math.random() * 1.8 + 1.2,
+        accent: i % 7 === 0,
+      }));
+    };
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+      width = rect.width;
+      height = rect.height;
+
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      createNodes();
+      draw();
+    };
+
+    const draw = () => {
+      if (!width || !height) return;
+
+      ctx.clearRect(0, 0, width, height);
+
+      nodes.forEach((node) => {
+        if (!reducedMotion) {
+          node.x += node.vx;
+          node.y += node.vy;
+
+          if (node.x < 0 || node.x > width) node.vx *= -1;
+          if (node.y < 0 || node.y > height) node.vy *= -1;
+        }
+
+        const dx = mouse.x === null ? Infinity : mouse.x - node.x;
+        const dy = mouse.y === null ? Infinity : mouse.y - node.y;
+        const mouseDistance = Math.hypot(dx, dy);
+
+        // Gently attract nearby particles towards the pointer.
+        if (!reducedMotion && mouseDistance < 160) {
+          const influence = (1 - mouseDistance / 160) * 0.018;
+          node.vx += dx * influence * 0.01;
+          node.vy += dy * influence * 0.01;
+        }
+
+        // Keep movement controlled.
+        node.vx = Math.max(-0.65, Math.min(0.65, node.vx));
+        node.vy = Math.max(-0.65, Math.min(0.65, node.vy));
+      });
+
+      // Draw connections between nearby nodes.
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i];
+          const b = nodes[j];
+
+          const distance = Math.hypot(a.x - b.x, a.y - b.y);
+
+          if (distance < connectionDistance) {
+            const opacity = 1 - distance / connectionDistance;
+
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+
+            ctx.strokeStyle = `rgba(190, 90, 125, ${opacity * 0.3})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw nodes.
+      nodes.forEach((node) => {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+
+        ctx.fillStyle = node.accent ? "#ed2445" : "rgba(105, 91, 115, 0.65)";
+
+        ctx.fill();
+
+        if (node.accent) {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, node.radius + 4, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(237, 36, 69, 0.25)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      });
+    };
+
+    const animate = () => {
+      if (!visible) return;
+
+      draw();
+
+      if (!reducedMotion) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+
+        if (visible && !reducedMotion) {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = requestAnimationFrame(animate);
+        } else {
+          cancelAnimationFrame(animationFrame);
+        }
+      },
+      { threshold: 0.05 },
+    );
+
+    const resizeObserver = new ResizeObserver(resize);
+
+    resizeObserver.observe(canvas);
+    observer.observe(canvas);
+
+    resize();
+
+    if (!reducedMotion) {
+      animationFrame = requestAnimationFrame(animate);
+    }
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      observer.disconnect();
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  const handlePointerMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+
+    pointerRef.current = {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    };
+  };
+
+  const handlePointerLeave = () => {
+    pointerRef.current = { x: null, y: null };
+  };
+
+  return (
+    <div
+      className="influencer-network-visual"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+    >
+      <canvas
+        ref={canvasRef}
+        className="influencer-network-canvas"
+        aria-label="Interactive creator connection network"
+        role="img"
+      />
+
+      <div className="dot-field-top">
+        <span className="dot-field-status">
+          <span />
+          CREATOR NETWORK ACTIVE
+        </span>
+
+        <span className="dot-field-system">NETWORK // 365</span>
+      </div>
+
+      <div className="dot-field-center">
+        <span className="dot-field-center-label">INFLUENCE IN MOTION</span>
+
+        <h4>
+          People.
+          <br />
+          Create impact<span>.</span>
+        </h4>
+      </div>
+
+      <div className="dot-field-bottom">
+        <span>CREATORS · BRANDS · AUDIENCES</span>
+        <span className="dot-field-live">● CONNECTED</span>
+      </div>
+    </div>
+  );
+}
+
+function DotFieldVisual() {
+  const canvasRef = useRef(null);
+  const pointerRef = useRef({ x: null, y: null });
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    let width = 0;
+    let height = 0;
+    let animationFrame;
+    let startTime = performance.now();
+    let isVisible = true;
+
+    const spacing = 22;
+
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+      width = rect.width;
+      height = rect.height;
+
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      draw(performance.now());
+    };
+
+    const draw = (time) => {
+      if (!width || !height) return;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const centerX = width / 2;
+      const centerY = height / 2;
+
+      const pointerX = pointerRef.current.x ?? centerX;
+      const pointerY = pointerRef.current.y ?? centerY;
+
+      const elapsed = reducedMotion ? 0 : time - startTime;
+
+      for (let y = spacing / 2; y < height; y += spacing) {
+        for (let x = spacing / 2; x < width; x += spacing) {
+          const centerDistance = Math.hypot(x - centerX, y - centerY);
+
+          const pointerDistance = Math.hypot(x - pointerX, y - pointerY);
+
+          const baseWave = Math.sin(centerDistance * 0.035 - elapsed * 0.0015);
+
+          const pointerWave = Math.sin(
+            pointerDistance * 0.065 - elapsed * 0.006,
+          );
+
+          const pointerInfluence = Math.exp(-pointerDistance / 150);
+
+          const displacement =
+            baseWave * 2.5 + pointerWave * pointerInfluence * 9;
+
+          const radius =
+            1.15 + Math.max(0, baseWave) * 0.45 + pointerInfluence * 0.65;
+
+          const drawX = x + displacement;
+          const drawY = y + displacement * 0.45;
+
+          const accent = pointerInfluence > 0.35;
+
+          ctx.beginPath();
+          ctx.arc(drawX, drawY, radius, 0, Math.PI * 2);
+
+          ctx.fillStyle = accent
+            ? `rgba(237, 36, 69, ${0.45 + pointerInfluence * 0.5})`
+            : `rgba(105, 91, 115, ${0.28 + Math.max(0, baseWave) * 0.3})`;
+
+          ctx.fill();
+        }
+      }
+    };
+
+    const animate = (time) => {
+      if (!isVisible) return;
+
+      draw(time);
+
+      if (!reducedMotion) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+
+        if (isVisible && !reducedMotion) {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = requestAnimationFrame(animate);
+        } else {
+          cancelAnimationFrame(animationFrame);
+        }
+      },
+      { threshold: 0.05 },
+    );
+
+    const resizeObserver = new ResizeObserver(resizeCanvas);
+
+    resizeObserver.observe(canvas);
+    observer.observe(canvas);
+
+    resizeCanvas();
+
+    if (!reducedMotion) {
+      animationFrame = requestAnimationFrame(animate);
+    }
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      observer.disconnect();
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  const handlePointerMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+
+    pointerRef.current = {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    };
+  };
+
+  const handlePointerLeave = () => {
+    pointerRef.current = { x: null, y: null };
+  };
+
+  return (
+    <div
+      className="dot-field-visual"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+    >
+      <canvas
+        ref={canvasRef}
+        className="dot-field-canvas"
+        aria-label="Animated interactive particle field"
+        role="img"
+      />
+
+      <div className="dot-field-top">
+        <span className="dot-field-status">
+          <span />
+          AUDIENCE IN MOTION
+        </span>
+
+        <span className="dot-field-system">SOCIAL // 365</span>
+      </div>
+
+      <div className="dot-field-center">
+        <span className="dot-field-center-label">SOCIAL CONNECTIONS</span>
+        <h4>
+          Every dot.
+          <br />A connection<span>.</span>
+        </h4>
+      </div>
+
+      <div className="dot-field-bottom">
+        <span>STRATEGY · CONTENT · COMMUNITY</span>
+        <span className="dot-field-live">● LIVE FIELD</span>
+      </div>
+    </div>
+  );
+}
+
+function PerformanceWavesVisual() {
+  const canvasRef = useRef(null);
+  const pointerRef = useRef({ x: null, y: null });
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    let width = 0;
+    let height = 0;
+    let animationFrame;
+    let isVisible = true;
+    let startTime = performance.now();
+
+    const waveColors = [
+      "rgba(237, 36, 69, 0.75)",
+      "rgba(255, 105, 135, 0.65)",
+      "rgba(191, 145, 235, 0.55)",
+      "rgba(237, 36, 69, 0.35)",
+      "rgba(255, 170, 190, 0.7)",
+      "rgba(160, 130, 220, 0.4)",
+    ];
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+      width = rect.width;
+      height = rect.height;
+
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      draw(performance.now());
+    };
+
+    const draw = (time) => {
+      if (!width || !height) return;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const elapsed = reducedMotion ? 0 : (time - startTime) * 0.00045;
+      const centerY = height * 0.52;
+      const amplitude = Math.min(height * 0.2, 95);
+
+      // Soft central glow
+      const glow = ctx.createRadialGradient(
+        width * 0.52,
+        centerY,
+        5,
+        width * 0.52,
+        centerY,
+        width * 0.55,
+      );
+
+      glow.addColorStop(0, "rgba(255, 105, 145, 0.12)");
+      glow.addColorStop(0.55, "rgba(218, 165, 240, 0.07)");
+      glow.addColorStop(1, "rgba(255, 255, 255, 0)");
+
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, width, height);
+
+      const pointerX = pointerRef.current.x;
+      const pointerY = pointerRef.current.y;
+
+      // Draw flowing performance waves
+      waveColors.forEach((color, waveIndex) => {
+        const phase = waveIndex * 0.85;
+        const waveAmplitude = amplitude * (0.55 + waveIndex * 0.075);
+
+        ctx.beginPath();
+
+        for (let x = 0; x <= width; x += 3) {
+          const progress = x / width;
+
+          const wave =
+            Math.sin(progress * Math.PI * 2.2 + elapsed + phase) *
+              waveAmplitude +
+            Math.sin(progress * Math.PI * 4.1 - elapsed * 0.8 + phase) *
+              (waveAmplitude * 0.24);
+
+          const pointerDistance =
+            pointerX === null ? 0 : Math.abs(x - pointerX);
+
+          const pointerInfluence =
+            pointerX === null ? 0 : Math.max(0, 1 - pointerDistance / 220);
+
+          const pointerLift =
+            pointerY === null
+              ? 0
+              : (centerY - pointerY) * pointerInfluence * 0.12;
+
+          const y = centerY + wave + pointerLift + (waveIndex - 2.5) * 10;
+
+          if (x === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = waveIndex === 0 ? 2 : 1.25;
+        ctx.globalAlpha = 0.9;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = waveIndex === 0 ? 12 : 5;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+      });
+
+      // Floating performance signals
+      for (let i = 0; i < 9; i++) {
+        const progress = (i / 9 + elapsed * 0.12) % 1;
+        const x = progress * width;
+
+        const y =
+          centerY +
+          Math.sin(progress * Math.PI * 4 + elapsed * 2) * amplitude * 0.7;
+
+        const pulse = 2.5 + Math.sin(elapsed * 4 + i) * 0.8;
+
+        ctx.beginPath();
+        ctx.arc(x, y, pulse, 0, Math.PI * 2);
+        ctx.fillStyle = i % 3 === 0 ? "#ed2445" : "#d9a3c8";
+        ctx.shadowColor = "#ed2445";
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    };
+
+    const animate = (time) => {
+      if (!isVisible) return;
+
+      draw(time);
+
+      if (!reducedMotion) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+
+        if (isVisible && !reducedMotion) {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = requestAnimationFrame(animate);
+        } else {
+          cancelAnimationFrame(animationFrame);
+        }
+      },
+      { threshold: 0.05 },
+    );
+
+    const resizeObserver = new ResizeObserver(resize);
+
+    resizeObserver.observe(canvas);
+    observer.observe(canvas);
+    resize();
+
+    if (!reducedMotion) {
+      animationFrame = requestAnimationFrame(animate);
+    }
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      observer.disconnect();
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  const handlePointerMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+
+    pointerRef.current = {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    };
+  };
+
+  const handlePointerLeave = () => {
+    pointerRef.current = { x: null, y: null };
+  };
+
+  return (
+    <div
+      className="performance-waves-visual"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+    >
+      <canvas
+        ref={canvasRef}
+        className="performance-waves-canvas"
+        aria-label="Animated performance data waves"
+        role="img"
+      />
+
+      <div className="performance-waves-top">
+        <span className="performance-waves-status">
+          <span />
+          PERFORMANCE IN MOTION
+        </span>
+
+        <span className="performance-waves-system">GROWTH // 365</span>
+      </div>
+
+      <div className="performance-waves-center">
+        <span>DATA · STRATEGY · RESULTS</span>
+        <h4>
+          Turn Data
+          <br />
+          Into Growth<span>.</span>
+        </h4>
+      </div>
+
+      <div className="performance-waves-bottom">
+        <span>REACH · CONVERSION · SCALE</span>
+        <span className="performance-waves-live">
+          <i /> LIVE PERFORMANCE
+        </span>
+      </div>
+    </div>
+  );
+}
 function ServiceMockupCanvas({ service, index }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
@@ -469,15 +1103,15 @@ export default function ServicesDeck() {
                   className="stack-card"
                   style={{ zIndex: index + 1 }}
                 >
-                  <div className="stack-card-inner">
+                  <div
+                    className={`stack-card-inner ${
+                      index === 2
+                        ? "stack-card-inner--performance"
+                        : "stack-card-inner--interactive"
+                    }`}
+                  >
                     {/* ---------------- Left Column: Details & Narrative ---------------- */}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "22px",
-                      }}
-                    >
+                    <div className="service-card-copy">
                       {/* Step Counter */}
                       <div
                         style={{
@@ -558,7 +1192,15 @@ export default function ServicesDeck() {
                     </div>
 
                     {/* ---------------- Right Column: Arched Dark 3D Tilt Mockup ---------------- */}
-                    <ServiceMockupCanvas service={service} index={index} />
+                    {index === 0 ? (
+                      <DotFieldVisual />
+                    ) : index === 1 ? (
+                      <InfluencerNetworkVisual />
+                    ) : index === 2 ? (
+                      <PerformanceWavesVisual />
+                    ) : (
+                      <ServiceMockupCanvas service={service} index={index} />
+                    )}
                   </div>
                 </div>
               );
