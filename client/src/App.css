@@ -201,14 +201,38 @@
   }
 }
 
+/* ── Left column base layout ──────────────────────────────────────────────── */
+.service-card-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* vertically centres all content in the column */
+  gap: 18px;
+}
+
 .service-card-title {
   font-family: var(--font-sans);
-  font-size: clamp(2.4rem, 4.4vw, 4.6rem);
+  font-size: clamp(2rem, 3.6vw, 3.8rem);
   font-weight: 700;
   line-height: 1.0;
   letter-spacing: -0.035em;
   color: var(--color-text-dark);
   margin: 0;
+}
+
+/* Tag pills row — never wraps more than one line on desktop */
+.service-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  row-gap: 8px;
+}
+
+/* Tighten individual pills so long labels still fit on one row */
+.service-card-tags .badge-pill {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 /* ==========================================================================
